@@ -4,8 +4,8 @@ set -o errexit
 # Install Python dependencies
 pip install -r requirements.txt
 
-# Run migrations
-python manage.py migrate
+# Force migrations
+python force_migrate.py
 
 # Check database
 python check_db.py
@@ -13,7 +13,7 @@ python check_db.py
 # Create superuser
 python create_superuser.py
 
-# Check database again
+# Final check
 python check_db.py
 
 # Collect static files
