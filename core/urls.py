@@ -35,21 +35,26 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-from django.views.generic import TemplateView
-from django.conf import settings
-from django.conf.urls.static import static
-
-class ReactAppView(TemplateView):
-    template_name = 'index.html'
+def home_view(request):
+    return HttpResponse('''
+    <h1>🏢 Sistema de Gestión de Inmuebles</h1>
+    <div style="font-family: Arial; margin: 20px;">
+        <h2>Enlaces:</h2>
+        <ul>
+            <li><a href="/admin/" style="color: #007cba;">🔧 Panel de Administración</a></li>
+            <li><a href="/api/" style="color: #007cba;">🔌 API REST</a></li>
+            <li><a href="/swagger/" style="color: #007cba;">📚 Documentación API</a></li>
+        </ul>
+        <h3>Credenciales:</h3>
+        <p><strong>Usuario:</strong> admin<br><strong>Contraseña:</strong> admin123</p>
+    </div>
+    ''')
 
 urlpatterns = [
+    path('', home_view, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('condominio.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('', ReactAppView.as_view(), name='home'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
