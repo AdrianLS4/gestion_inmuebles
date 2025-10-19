@@ -142,11 +142,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = []
 
-if os.path.exists(os.path.join(BASE_DIR, 'condominio-frontend', 'dist', 'assets')):
-    STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'condominio-frontend', 'dist', 'assets'))
-
 # Whitenoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+# Force collect static files
+if not DEBUG:
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
