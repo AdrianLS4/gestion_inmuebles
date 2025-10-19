@@ -35,14 +35,21 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-def home_view(request):
-    return HttpResponse('<h1>Sistema de Gestión de Inmuebles</h1><p><a href="/admin/">Admin</a> | <a href="/api/">API</a> | <a href="/swagger/">Docs</a></p>')
+from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
+
+class ReactAppView(TemplateView):
+    template_name = 'index.html'
 
 urlpatterns = [
-    path('', home_view, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('condominio.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('', ReactAppView.as_view(), name='home'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
