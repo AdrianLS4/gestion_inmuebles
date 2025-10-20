@@ -837,7 +837,9 @@ class ReportesViewSet(viewsets.ViewSet):
 
 
 from rest_framework.views import APIView
+from django.utils.decorators import method_decorator
 
+@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     permission_classes = [AllowAny]
     
