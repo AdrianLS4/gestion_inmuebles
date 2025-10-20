@@ -54,11 +54,14 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Add CSRF middleware only in production
+if not DEBUG:
+    MIDDLEWARE.insert(4, 'django.middleware.csrf.CsrfViewMiddleware')
 
 ROOT_URLCONF = 'core.urls'
 
